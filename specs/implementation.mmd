@@ -1,0 +1,68 @@
+# Implementation Plan
+
+## Status: READY FOR SPEC
+
+No feature is currently being implemented. 
+
+To start a new feature:
+1. Use the spec-generator prompt to interview and create specs
+2. Save the feature spec to `specs/features/[feature-name].md`
+3. Update this file with the implementation phases
+4. Run Ralph loops to execute
+
+---
+
+## Template (Copy When Starting)
+
+```markdown
+# Implementation Plan: [Feature Name]
+
+## Status: IN PROGRESS
+
+- [ ] **Phase 1: Database Schema**
+    - Ref: `specs/features/[feature].md` (Data Model)
+    - [ ] Create Prisma model(s)
+    - [ ] Run `npx prisma generate`
+    - [ ] Run `npx prisma db push`
+    - [ ] Verify in Prisma Studio
+
+- [ ] **Phase 2: API Layer**
+    - Ref: `specs/features/[feature].md` (API Endpoints)
+    - [ ] Create route handler: GET
+    - [ ] Create route handler: POST
+    - [ ] Create route handler: PUT/PATCH
+    - [ ] Create route handler: DELETE
+    - [ ] Add Zod validation schemas
+    - [ ] Write API tests
+
+- [ ] **Phase 3: UI Components**
+    - Ref: `specs/features/[feature].md` (User Interface)
+    - [ ] Create page: /[feature]/page.tsx
+    - [ ] Create components
+    - [ ] Wire up API calls
+    - [ ] Add loading states
+    - [ ] Add error handling
+
+- [ ] **Phase 4: Integration**
+    - Ref: `specs/features/[feature].md` (Integrations)
+    - [ ] Set up external API client(s)
+    - [ ] Implement integration logic
+    - [ ] Add error handling
+    - [ ] Test end-to-end
+
+- [ ] **Phase 5: Polish & Deploy**
+    - [ ] Add feature flag
+    - [ ] Update navigation
+    - [ ] Write user documentation
+    - [ ] Test full user flow
+    - [ ] Deploy to staging
+    - [ ] Deploy to production
+
+## Status: COMPLETE
+```
+
+---
+
+## Completed Features
+
+(None yet)

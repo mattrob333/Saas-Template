@@ -1,110 +1,282 @@
-# Modern SaaS template
+# SaaS Factory Template
 
-A Next.js 14, Typescript, Clerk, Supabase, Stripe, OpenAi template ready to go.
+A modern, production-ready SaaS template powered by the **Claude Agent SDK** for building AI-native applications with multi-agent orchestration capabilities.
 
-Welcome to Omniscient, an advanced AI Platform offered as a SaaS (Software as a Service). Empower your projects with cutting-edge artificial intelligence capabilities across various domains. Built on a robust technology stack, Omniscient seamlessly integrates with Next.js 14, React, Typescript, and powerful APIs such as OpenAI and Replicate. This platform is designed to provide a comprehensive solution for code generation, conversation simulation, image creation, music composition, and video generation.
+## Overview
 
-## Key Features
+SaaS Factory is a comprehensive template for rapidly building AI-powered SaaS applications. It combines the official Claude Agent SDK with a robust Next.js foundation, providing everything you need to create intelligent, scalable applications with sophisticated agent workflows.
 
-- **Free and Pro Plans**: Choose between free and pro plans tailored to meet your specific needs.
+### Why Claude Agent SDK?
 
-- **User Settings**: Manage your experience with ease. Take control of account details, services, and monitor resource usage effortlessly.
+The Claude Agent SDK (`@anthropic-ai/claude-agent-sdk`) is the **primary AI driver** for this template, enabling:
 
-- **Multifaceted AI Models**:
-  - **Code Generation**: Automate code creation with advanced models.
-  - **Conversation Simulation**: Engage in realistic conversation simulations for diverse applications.
-  - **Image Creation**: Generate stunning visuals with AI-powered image generation.
-  - **Music Composition**: Unlock creativity with AI-generated musical compositions.
-  - **Video Generation**: Seamlessly create videos for your projects with AI assistance.
+- **Agentic Interactions**: Multi-turn conversations with tool use and reasoning
+- **Built-in Tools**: Access to Claude's native tools (Read, Write, Edit, Bash, WebSearch, etc.)
+- **Session Management**: Persistent conversations with session resumption
+- **Custom MCP Servers**: Extend capabilities with Model Context Protocol tools
+- **Multi-Agent Orchestration**: Sequential chains, parallel execution, consensus workflows
+
+## Features
+
+### AI Agent System
+- **BaseAgent Class**: Flexible agent wrapper around the SDK's `query()` function
+- **Tool Presets**: Pre-configured tool sets for different agent types (researcher, developer, analyst)
+- **Custom MCP Tools**: Database, notification, content, and handoff tool servers
+- **Orchestration Patterns**: Sequential chains, parallel agents, consensus voting, pipelines, supervisor patterns
+
+### Agent Types
+- **Default Agent**: General-purpose assistant
+- **Researcher Agent**: Web search and information synthesis
+- **Writer Agent**: Content creation and editing
+- **Analyst Agent**: Data analysis with read-only file access
+- **Developer Agent**: Code generation with full development tools
+
+### Core Infrastructure
+- **Authentication**: Clerk for user management and authentication
+- **Database**: Supabase + Prisma ORM
+- **Payments**: Stripe integration with subscription management
+- **Rate Limiting**: Free tier limits with Pro plan upgrades
+- **UI Components**: shadcn/ui + Tailwind CSS
 
 ## Technology Stack
 
-- **Frontend**: Next.js 14, React, Typescript, Clerk, Tailwind, Shadcn-ui
-- **Backend**: Prisma, Postgres, Supabase
-- **AI Integration**: OpenAI API, Replicate API
-- **State Management**: Zustand
-- **Form Handling**: React Hook Form
-- **API Communication**: Axios
-- **Toast Notifications**: [Sonner](https://sonner.emilkowal.ski/)
-- **Markdown Rendering**: React Markdown
-- **Payment Processing**: Stripe
+| Category | Technologies |
+|----------|-------------|
+| **AI** | Claude Agent SDK, Anthropic API |
+| **Frontend** | Next.js 14, React 18, TypeScript, Tailwind CSS |
+| **UI Components** | shadcn/ui, Radix UI, Lucide Icons |
+| **Backend** | Next.js API Routes, Prisma ORM |
+| **Database** | Supabase (PostgreSQL) |
+| **Auth** | Clerk |
+| **Payments** | Stripe |
+| **State** | Zustand |
+| **Forms** | React Hook Form, Zod |
+
+## Project Structure
+
+```
+├── app/
+│   ├── api/
+│   │   ├── agent/           # Claude Agent SDK endpoints
+│   │   │   ├── route.ts     # Main agent API
+│   │   │   └── stream/      # Streaming responses
+│   │   ├── conversation/    # Legacy OpenAI route
+│   │   ├── stripe/          # Payment webhooks
+│   │   └── webhook/         # Stripe webhooks
+│   └── (dashboard)/         # Protected dashboard routes
+├── lib/
+│   ├── agents/              # Agent SDK integration
+│   │   ├── base-agent.ts    # BaseAgent class
+│   │   ├── types.ts         # TypeScript types
+│   │   ├── tools/           # Custom MCP tool servers
+│   │   └── chains/          # Orchestration patterns
+│   ├── api-limit.ts         # Rate limiting
+│   └── subscription.ts      # Stripe subscription checks
+├── components/              # React components
+├── specs/                   # Technical specifications
+└── .ralph/                  # Ralph loop configuration
+```
 
 ## Getting Started
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Configure your environment variables.
-4. Run the application: `npm run dev`
+### Prerequisites
 
-### Store your keys on your .env or .env.local
+- Node.js 18+
+- npm, yarn, or pnpm
+- Supabase account
+- Clerk account
+- Stripe account
+- Anthropic API key
 
-```bash
-CLERK_SECRET_KEY=
+### Installation
 
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=http://localhost:3000/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=http://localhost:3000/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=http://localhost:3000/dashboard
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=http://localhost:3000/dashboard
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/saas-factory.git
+   cd saas-factory
+   ```
 
-OPENAI_API_KEY=
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-REPLICATE_API_TOKEN=
+3. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   ```
 
-NEXT_PUBLIC_APP_URL=
+4. **Set up your environment variables** in `.env`:
+   ```bash
+   # Required - Claude Agent SDK
+   ANTHROPIC_API_KEY=sk-ant-xxxxx
 
-DATABASE_URL=
+   # Required - Authentication
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxx
+   CLERK_SECRET_KEY=sk_test_xxxxx
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 
-STRIPE_API_KEY=
-STRIPE_WEBHOOK_SECRET=
+   # Required - Database
+   DATABASE_URL=postgresql://user:password@localhost:5432/database
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=xxxxx
+
+   # Required - Payments
+   STRIPE_API_KEY=sk_test_xxxxx
+   STRIPE_WEBHOOK_SECRET=whsec_xxxxx
+   STRIPE_PRO_PRICE_ID=price_xxxxx
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+   # Optional - Additional AI providers
+   OPENAI_API_KEY=sk-xxxxx
+   REPLICATE_API_TOKEN=r8_xxxxx
+   ```
+
+5. **Set up the database**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+Visit [http://localhost:3000](http://localhost:3000) to see your app.
+
+## Using the Agent API
+
+### Basic Request
+
+```typescript
+const response = await fetch('/api/agent', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    prompt: 'Analyze this code and suggest improvements',
+    agentType: 'developer',
+    maxTurns: 10,
+  }),
+});
+
+const result = await response.json();
+console.log(result.result);
 ```
 
-## For prisma
+### Agent Types
 
-```bash
-# Generate prisma setup
-npx prisma init # than make your changes on prisma schema with your provider and connection string
+| Type | Description | Tools |
+|------|-------------|-------|
+| `default` | General assistant | None |
+| `researcher` | Web search & synthesis | WebSearch, WebFetch, Read |
+| `writer` | Content creation | None |
+| `analyst` | Data analysis | Read, Glob, Grep |
+| `developer` | Code generation | Read, Write, Edit, Bash, Glob, Grep |
 
-# Generate/Create tables
-npx prisma generate
+### Custom System Prompts
 
-# Install prisma client
-npm i @prisma/client
-
-# Push schema to db
-npx prisma db push
-
-# Open prisma studio on localhost
-npx prisma studio
-
-# Reset database (You will lose all the data)
-npx prisma migrate reset
+```typescript
+const response = await fetch('/api/agent', {
+  method: 'POST',
+  body: JSON.stringify({
+    prompt: 'Your task here',
+    systemPrompt: 'You are a specialized assistant for...',
+    tools: ['Read', 'Write', 'Edit'],
+  }),
+});
 ```
 
-## For stripe
+### Streaming Responses
 
-- Create the connection with the sample endpoint
-- Test in local environment
-- Download cli
-- $ stripe login (check documentation)
-- $ stripe listen --forward-to (localhost:3000/api/webhook)
-  now you got the secret, copy it and add it to your .env `STRIPE_WEBHOOK_SECRET`
-- $ stripe trigger (trigger events with the cli)
-- Keep dev running , prisma and stripe cli bash's
-- Go to stipe website and search customer portal and activate 'Activate test link'
+```typescript
+const response = await fetch('/api/agent/stream', {
+  method: 'POST',
+  body: JSON.stringify({
+    prompt: 'Generate a detailed report',
+    agentType: 'analyst',
+  }),
+});
+
+const reader = response.body?.getReader();
+// Process SSE stream
+```
+
+## Agent Architecture
+
+### BaseAgent Class
+
+The `BaseAgent` class wraps the Claude Agent SDK's `query()` function:
+
+```typescript
+import { createAgent, createToolAgent } from '@/lib/agents';
+
+// Simple agent
+const agent = createAgent('assistant', 'You are helpful.');
+const result = await agent.run('Hello!');
+
+// Agent with tools
+const devAgent = createToolAgent(
+  'developer',
+  'You are a senior developer.',
+  ['Read', 'Write', 'Edit', 'Bash']
+);
+const result = await devAgent.run('Create a React component');
+```
+
+### Multi-Agent Orchestration
+
+```typescript
+import { runSequentialChain, runParallelAgents } from '@/lib/agents';
+
+// Sequential chain
+const result = await runSequentialChain(
+  [researchAgent, writerAgent, editorAgent],
+  'Write an article about AI'
+);
+
+// Parallel execution
+const results = await runParallelAgents(
+  [analyzerA, analyzerB, analyzerC],
+  'Analyze this data'
+);
+```
+
+## Prisma Commands
+
+```bash
+npx prisma generate      # Generate client
+npx prisma db push       # Push schema to database
+npx prisma studio        # Open Prisma Studio
+npx prisma migrate reset # Reset database (destructive)
+```
+
+## Stripe Setup
+
+1. Create a Stripe account and get API keys
+2. Set up a webhook endpoint pointing to `/api/webhook`
+3. For local development:
+   ```bash
+   stripe login
+   stripe listen --forward-to localhost:3000/api/webhook
+   ```
+4. Copy the webhook secret to `STRIPE_WEBHOOK_SECRET`
+5. Create a Pro plan product and copy the price ID to `STRIPE_PRO_PRICE_ID`
 
 ## Contributing
 
-Contributions are welcome to enhance Omniscient's capabilities. Whether it's fixing bugs, improving existing features, or proposing new ones, your input is valuable.
-
-## Reporting Issues
-
-If you encounter any issues or have suggestions for improvement, please [create an issue](https://github.com/your-username/omniscient/issues) on our GitHub repository.
+Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Original authors
+## Credits
 
-This template was copied and slightly adjusted from [@RicardoGEsteves' repo](https://github.com/RicardoGEsteves/omniscient) and [@AntonioErdeljac's youtube video](https://www.youtube.com/watch?v=ffJ38dBzrlY&t=9505s&ab_channel=CodeWithAntonio).
+This template builds upon work from:
+- [@RicardoGEsteves' Omniscient](https://github.com/RicardoGEsteves/omniscient)
+- [@AntonioErdeljac's tutorial](https://www.youtube.com/watch?v=ffJ38dBzrlY)
+- [Anthropic Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/typescript)
